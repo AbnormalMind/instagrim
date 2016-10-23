@@ -1,0 +1,30 @@
+<div id="centerContent">
+
+            <div id="centerBox">
+
+                <a href="upload.jsp">Upload</a>
+                <%
+                    LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+                    if (lg != null) {
+                        String UserName = lg.getUsername();
+                        if (lg.getlogedin()) {
+                %>
+                <a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a>
+                <%}
+                } else {
+                %>
+                <a href="login.jsp" tabindex="13"style="border-right: thin solid #000 " class="signButton" target="_self">
+                    Login &nbsp
+                </a>
+                <a href="register.jsp" tabindex="14" class="signButton" target="_self">
+                    Sign Up
+                </a>
+                <% }%>
+
+            </div>
+            <img src="">
+        </div>
+
+        <div class="footer">
+            Coursework for AC32007 by <strong>Atanas Chilingirov - Matriculation #14003353</strong>.
+        </div>

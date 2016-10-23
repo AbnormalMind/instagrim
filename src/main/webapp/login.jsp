@@ -14,6 +14,45 @@
 
     </head>
     <body>
+
+        <div class="logInForm">
+            <h1>InstaGrim! Your World in Black and White</h1>
+            <form method="POST" action="Login">
+            <div>
+            <p>
+                <label>
+                    <input type="text" name="username" placeholder="Username">                    
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="password" name="password" placeholder="Password">                    
+                </label>
+            </p>
+            </div>
+            </form>
+        </div>
+    </body>
+</html>
+
+
+
+
+<%-- <a href="/Instagrim/Images/majed">Sample Images</a>
+
+
+
+            <p>
+                <label>Date of Birth
+                    <input type="date" name="dob">
+                </label>
+            </p>
+
+
+
+
+
+
         <header>
         <h1>InstaGrim ! </h1>
         <h2>Your world in Black and White</h2>
@@ -42,5 +81,4 @@
                 <li class="footer"><a href="/Instagrim">Home</a></li>
             </ul>
         </footer>
-    </body>
-</html>
+--%>

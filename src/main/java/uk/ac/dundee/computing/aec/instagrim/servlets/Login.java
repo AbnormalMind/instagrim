@@ -47,9 +47,8 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         String username=request.getParameter("username");
-        String password=request.getParameter("password");
+        String password=request.getParameter("password");   
         
         User us=new User();
         us.setCluster(cluster);
@@ -64,13 +63,20 @@ public class Login extends HttpServlet {
             
             session.setAttribute("LoggedIn", lg);
             System.out.println("Session in servlet "+session);
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
+            RequestDispatcher rd=request.getRequestDispatcher("/");
 	    rd.forward(request,response);
             
         }else{
-            response.sendRedirect("/Instagrim/login.jsp");
+            response.sendRedirect("/Instagrim/Authentication Failed");
         }
         
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        RequestDispatcher rd=request.getRequestDispatcher("/");
+        rd.forward(request,response);
     }
 
     /**

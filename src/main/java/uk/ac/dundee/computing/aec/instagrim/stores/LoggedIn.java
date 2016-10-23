@@ -12,9 +12,10 @@ package uk.ac.dundee.computing.aec.instagrim.stores;
  */
 public class LoggedIn {
     boolean logedin=false;
+    boolean check = true;
     String Username=null;
     public void LogedIn(){
-        
+    
     }
     
     public void setUsername(String name){
@@ -35,5 +36,14 @@ public class LoggedIn {
     }
     public boolean getlogedin(){
         return logedin;
+    }
+    public void refreshViewProfile(boolean check){
+        this.check=check;
+    }
+    public void refreshV(){
+        check = false;   
+    }
+    public boolean getRefresh(){
+        return check;
     }
 }

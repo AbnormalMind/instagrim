@@ -45,15 +45,40 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String firstname=request.getParameter("firstname");
+        String lastname=request.getParameter("lastname");
         String username=request.getParameter("username");
         String password=request.getParameter("password");
-        
         User us=new User();
         us.setCluster(cluster);
-        us.RegisterUser(username, password);
+        boolean isValid = us.IsValidToRegister(username);
+        boolean isValidPassword = us.IsValidPassword(password);
+        if(isValid == false)
+        {//New user gets created because isValid is false i.e. There is no such username and password    
+            if(isValidPassword == true)
+            {
+                us.RegisterUser(firstname, lastname, username, password); 
+                response.sendRedirect("/Instagrim/Login"); //was /login.jsp
+            }
+            else 
+            { 
+                response.sendRedirect("/Instagrim/Authentication Failed");
+            } 
+        }
+        else
+        {
+            //user is valid so username was taken
+            response.sendRedirect("/Instagrim/Authentication Failed");
+        }
         
-	response.sendRedirect("/Instagrim");
-        
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        RequestDispatcher rd=request.getRequestDispatcher("/");
+        rd.forward(request,response);
     }
 
     /**

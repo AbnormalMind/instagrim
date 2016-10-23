@@ -7,6 +7,9 @@ package uk.ac.dundee.computing.aec.instagrim.stores;
 
 import com.datastax.driver.core.utils.Bytes;
 import java.nio.ByteBuffer;
+import java.lang.Math;
+import java.util.*;
+
 
 /**
  *
@@ -14,6 +17,9 @@ import java.nio.ByteBuffer;
  */
 public class Pic {
 
+    private Set<String> commentUser = new HashSet<>();
+    private Set<String> commentText = new HashSet<>();
+    private int like = 0;
     private ByteBuffer bImage = null;
     private int length;
     private String type;
@@ -32,6 +38,23 @@ public class Pic {
         this.bImage = bImage;
         this.length = length;
         this.type=type;
+    }
+
+    public void setComment(Set<String> commentText, Set<String> commentUser){
+        this.commentText = commentText;
+        this.commentUser = commentUser;
+    }
+
+    public Set<String> getCommentText(){
+        return commentText;
+    }
+
+    public Set<String> getCommentAuthor(){
+        return commentUser;
+    }
+
+    public String getCommentID(){
+        return commentID;
     }
 
     public ByteBuffer getBuffer() {

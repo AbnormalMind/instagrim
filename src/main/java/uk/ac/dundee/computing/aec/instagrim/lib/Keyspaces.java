@@ -25,9 +25,12 @@ public final class Keyspaces {
                     + " processed blob,"
                     + " imagelength int,"
                     + " thumblength int,"
-                    + "  processedlength int,"
+                    + " processedlength int,"
+                    + " likes int,"                //ADDED
                     + " type  varchar,"
                     + " name  varchar,"
+                    + " comments set <varchar>,"
+                    + " comuser set <text>,"
                     + " PRIMARY KEY (picid)"
                     + ")";
             String Createuserpiclist = "CREATE TABLE if not exists instagrim.userpiclist (\n"
@@ -43,11 +46,15 @@ public final class Keyspaces {
                     + "  );";
             String CreateUserProfile = "CREATE TABLE if not exists instagrim.userprofiles (\n"
                     + "      login text PRIMARY KEY,\n"
-                     + "     password text,\n"
+                    + "      password text,\n"
                     + "      first_name text,\n"
                     + "      last_name text,\n"
-                    + "      email set<text>,\n"
-                    + "      addresses  map<text, frozen <address>>\n"
+                    + "      email text,\n"
+                    + "      addresses  map<text, frozen <address>>,\n"
+                    + "      dob text,\n"                          //ADDED
+                    + "      tel text,\n"                          //ADDED
+                    + "      status text,\n"                       //ADDED
+                    + "      profile_picid uuid\n"                 //ADDED
                     + "  );";
             Session session = c.connect();
             try {
