@@ -40,7 +40,7 @@
                 if (lgo.getlogedin()) {
                 %>
                 <span class="tab editprofile"><a href="#editprofile">Edit profile</a></span>
-                <span class="tab viewprofile"><a href="#viewprofile">View profile</a></span>
+                <span class="tab viewprofile"><a href="#viewprofile">Preview profile</a></span>
                 <% 
                 }
                 }   

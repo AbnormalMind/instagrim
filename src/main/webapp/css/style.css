@@ -207,6 +207,11 @@ body .container .content input.inpt:-ms-input-placeholder {
 body .container .content input.inpt:focus {
   border-color: #999999;
 }
+
+#submit{
+  width: 247px;
+}
+
 body .submit {
   margin-bottom: 10px;
   font-family: 'Lato', sans-serif;

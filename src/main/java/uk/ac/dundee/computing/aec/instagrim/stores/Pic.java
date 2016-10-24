@@ -31,6 +31,10 @@ public class Pic {
     public void setUUID(java.util.UUID UUID){
         this.UUID =UUID;
     }
+    public java.util.UUID getUUID(){
+        return UUID;
+    }
+
     public String getSUUID(){
         return UUID.toString();
     }
@@ -51,10 +55,6 @@ public class Pic {
 
     public Set<String> getCommentAuthor(){
         return commentUser;
-    }
-
-    public String getCommentID(){
-        return commentID;
     }
 
     public ByteBuffer getBuffer() {

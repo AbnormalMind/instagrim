@@ -113,17 +113,15 @@ public class Image extends HttpServlet {
         throws ServletException, IOException {
         PicModel tm = new PicModel();
         tm.setCluster(cluster);
-        UUID picid=UUID.fromString(request.getParameter("picid"));
+        //UUID picid=UUID.fromString(request.getParameter("picid"));
 
-        Set<String> commentsToShow = tm.getComments(picid);
+        //Set<String> commentsToShow = tm.getComments(picid);
         java.util.LinkedList<Pic> lsPics = tm.getPicsForUser(User);
 
         RequestDispatcher rd = request.getRequestDispatcher("/UsersPics.jsp");
         request.setAttribute("Pics", lsPics);
-        request.setAttribute("Comments", commentsToShow);
-        request.setAttribute("User", User);
-        //LIKES ATTEMPT
-        //UUID picid = UUID.fromString(request.getParameter("picid"));
+        //request.setAttribute("Comments", commentsToShow);
+        //request.setAttribute("User", User);
 
         rd.forward(request, response);
     }
@@ -151,12 +149,15 @@ public class Image extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getParameter("currentUrl");
         String hiddenParam=request.getParameter("hiddenParam");
+        HttpSession session = request.getSession(); 
+        LoggedIn lg2 = (LoggedIn) session.getAttribute("LoggedIn");
         if(hiddenParam.compareTo("userpics") == 0){
-            //form 1 was posted
+            //form in userpics.jsp was posted
             PicModel tm = new PicModel();
             tm.setCluster(cluster);
             UUID picid=UUID.fromString(request.getParameter("picid"));
             String commentText = request.getParameter("comment");
+            commentText = lg2.getUsername() + ": " + commentText;
             String username = request.getParameter("username");
             tm.insertComment(picid,commentText,username);
             if(path.compareTo("/Instagrim/Upload") == 0)
@@ -171,7 +172,7 @@ public class Image extends HttpServlet {
             }
         }
         else if(hiddenParam.compareTo("upload") == 0){
-            //form 2 was posted       
+            //form in upload.jsp was posted       
             for (Part part : request.getParts()) {
                 System.out.println("Part Name " + part.getName());
 
@@ -179,8 +180,7 @@ public class Image extends HttpServlet {
                 String filename = part.getSubmittedFileName();
 
                 InputStream is = request.getPart(part.getName()).getInputStream();
-                int i = is.available();
-                HttpSession session = request.getSession();  
+                int i = is.available();  
                 LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
                 String username = "";
                 if (lg.getlogedin()) {

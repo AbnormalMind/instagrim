@@ -29,8 +29,9 @@ public final class Keyspaces {
                     + " likes int,"                //ADDED
                     + " type  varchar,"
                     + " name  varchar,"
-                    + " comments set <varchar>,"
-                    + " comuser set <text>,"
+                    + " comments set <varchar>,"   //ADDED
+                    + " comuser set <text>,"       //ADDED
+                    + " likeuser set <text>,"      //ADDED
                     + " PRIMARY KEY (picid)"
                     + ")";
             String Createuserpiclist = "CREATE TABLE if not exists instagrim.userpiclist (\n"

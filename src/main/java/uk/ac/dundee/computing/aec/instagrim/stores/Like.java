@@ -56,13 +56,14 @@ public class Like extends HttpServlet {
         User us=new User();
         us.setCluster(cluster);
         HttpSession session = request.getSession();
+        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
         UUID picid = UUID.fromString(request.getParameter("picid"));
         saveUUID = picid;
         String username = request.getParameter("username");
         System.out.println("picid and username in Likes post: " + picid + username);
         boolean add = userLikedPic (picid,username);
         addLike(picid, username, add);
-        response.sendRedirect("/Instagrim/Images/Like");
+        response.sendRedirect("/Instagrim/Images/"+lg.getUsername());
     }
 
     public boolean userLikedPic (UUID picid, String username)
@@ -145,7 +146,7 @@ public class Like extends HttpServlet {
         HttpSession session=request.getSession();
         //LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
         UUID picid = saveUUID;
-        System.out.println("MR SUPERMAN IS HOME EFUUERA "+picid+"EFUUERA "+getLikes(picid));
+        System.out.println("Picture ID "+picid+" Number of Likes "+getLikes(picid));
         String stored = Integer.toString(getLikes(picid));
         System.out.println(stored);
         RequestDispatcher rd=request.getRequestDispatcher("/UsersPics.jsp");

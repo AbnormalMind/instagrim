@@ -13,6 +13,14 @@
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="javax.servlet.http.Part" %>
 
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.models.PicModel" %>
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.stores.Like" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="com.datastax.driver.core.Cluster" %>
+<%@ page import="uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts" %>
+
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,23 +39,18 @@
         %>
         <nav>
             <ul>
-                <a href="/Instagrim/Upload" class="submit">Upload</a>
+                <a href="/Instagrim/Upload" class="submit">Upload Picture</a>
                 <a href="/Instagrim/Images/<%=lg.getUsername()%>" class="submit" >Sample Images</a>
-                <a href="/Instagrim" class="submit">Home</a>
+                <a href="/Instagrim" class="submit">Edit Profile</a>
         <article>
             <h1>Your Pics</h1>
-        <label>Number of Likes: <%=request.getAttribute("Likes")%></label>
         <%
-            java.util.Set<String> comm = (java.util.Set<String>) request. getAttribute("commentsToShow");
-            if(comm == null){ %> <p>No comments found.</p>
-        <%
-        } else {
-            Iterator<String> it = comm.iterator();
-            while(it.hasNext()) {
-                String com = it.next();
-        %>
-        <p><b>Comment:</b><%=com%></p>
-        <%
+            Cluster cluster;
+            cluster = CassandraHosts.getCluster();
+            PicModel tm = new PicModel();
+            Like lk = new Like();
+            tm.setCluster(cluster);
+            lk.setCluster(cluster);
             java.util.LinkedList<Pic> lsPics = (java.util.LinkedList<Pic>) request.getAttribute("Pics");
             if (lsPics == null) {
         %>
@@ -58,21 +61,27 @@
             iterator = lsPics.iterator();
             while (iterator.hasNext()) {
                 Pic p = (Pic) iterator.next();
+                Set<String> commentsToShow = tm.getComments(p.getUUID());
+                Set<String> userSet = tm.getUsersSet(p.getUUID());
+                String stored = Integer.toString(lk.getLikes(p.getUUID()));
         %>
+
         <form method="POST"  action="Like" class='containerPic'>
-        <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a> 
+        <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a>
+        <p><b>Comments: </b><%=commentsToShow%><br/><b>People who commented this picture: </b><%=userSet%></p>
         <input type="hidden" name="picid" value="<%=p.getSUUID()%>">
         <input type="hidden" name="username" value="<%=lg.getUsername()%>">
         <input type="submit" class='heart' value="♥">
+        <p><b>Likes: </b><%=stored%></p>
         </form>
+
         <form method="POST" enctype="multipart/form-data" action="Image">
         <input type="hidden" name="currentUrl" value="<%=request.getAttribute("javax.servlet.forward.request_uri")%>">
-        <textarea name="comment" id="comment" placeholder="Write your comment here"></textarea>
-        
+        <textarea rows="5" cols="32" name="comment" id="textarea" placeholder="Write your comment here"></textarea>
         <input type="hidden" name="picid" value="<%=p.getSUUID()%>">
         <input type="hidden" name="hiddenParam" value="userpics">
         <input type="hidden" name="username" value="<%=lg.getUsername()%>"> 
-        <input type="submit" value="Submit a Comment" class="submit"> 
+        <input type="submit" id="submit" value="Submit a Comment" class="submit"> 
         </form>
         <div class='bubble'></div>
         <%

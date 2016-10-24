@@ -139,11 +139,37 @@ public class PicModel {
         return true;
     }
 
+public Set<String> getUsersSet(UUID uuid){
+
+    Set<String> userSet = new HashSet<String>(Arrays.asList(""));
+
+    Session session = cluster.connect("instagrim");
+    PreparedStatement ps = session.prepare("select comuser from Pics where picid =?");
+    ResultSet rs = null;
+    BoundStatement boundStatement = new BoundStatement(ps);
+        rs=session.execute(boundStatement.bind(uuid));
+         if (rs.isExhausted())
+         {
+            System.out.println("No Images returned");
+         }
+         else
+         {
+            //int i=0;
+            for (Row row : rs) {
+                //comments[i]=row.getString("com_text");
+                //i++;
+                //comment = row.getString("comments");
+                userSet=row.getSet("comuser", String.class);
+                System.out.println("Users which commented: " + userSet);
+            }
+        }
+        return userSet;
+    }
+
+
 public Set<String> getComments(UUID uuid)
     {
-        String comment = "";
         Set<String> commentset = new HashSet<String>(Arrays.asList(""));
-        String[] comments = new String[3];
 
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select comments from Pics where picid =?");
@@ -162,11 +188,10 @@ public Set<String> getComments(UUID uuid)
                 //i++;
                 //comment = row.getString("comments");
                 commentset=row.getSet("comments", String.class);
-                System.out.println("output of comment in the for loop: " + commentset);
+                System.out.println("The Comments: " + commentset);
             }
         }
         return commentset;
-
     }
 
 
